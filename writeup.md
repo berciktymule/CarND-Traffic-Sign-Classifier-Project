@@ -79,6 +79,8 @@ Here is the distribution of the training data.
 
 ![alt text][image1]
 
+Driven by the review I decided to convert to grayscale, but I must say that I can't see a drop in training time or final accuracy.
+
 ###Design and Test a Model Architecture
 
 ####1. Describe how, and identify where in your code, you preprocessed the image data. What tecniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc.
@@ -93,14 +95,19 @@ Here is an example of some processing I've considered:
 
 From left:
 - original image,
-- image after a global histogram normalization,
+- image after a global histogram equalization,
 - image after separate canny detection on each channel
 - image displayed with a HSV colormap
 - image after global canny detection
 - image after separate adaptive histogram equalization on each channel
 - image after separate adaptive histogram equalization on each channel converted to grayscale
 
-As a last step, I normalized the image data because it makes training more efficient
+As a last step, I normalized the image data because it makes training more efficient.
+The goal of normalization is to bring the data to zero mean and equal variance.
+This is to make sure that the comuted gradients are not afected by the changes in range between the images.
+In case of these images it effictively meant to get rid of the differences of the lighting across the images.
+Achieving equal variance is effectively accomplished by the adaptive histogram equalization. A good point to make here is that this worked a profoundly better than min-max scaling.
+So the normalization step is used here for achieving zero mean and changing the data type so that the gradients of all the images are comparable to each other. This step has also dramatically increased the learning speed.
 
 ####2. Describe how, and identify where in your code, you set up training, validation and testing data. How much data was in each set? Explain what techniques were used to split the data into these sets. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, identify where in your code, and provide example images of the additional data)
 
@@ -215,3 +222,8 @@ The code for making predictions on my final model is located in the 16th cell of
 Here are the predictions visualized:
 
 ![alt text][image11] 
+
+As you can see the predictions on all the classes other than the slippery road sign are very close to 1. This means that for most the bins the model is very certain of the answer. The second candidates have probabilities few order of magnitiude smaller.
+In case of the incorrectly predicted sign the correct sign is classified as third and the probabilities of the 4 first classes are very close. Again if you look at the distribution of the examples it shows that these are the classes with the fewest training examples.
+That brings me to a conclusion that the right next step would be to generate more examples.
+We could do that by using combination of few transformations like noise, translation, skew and rotation.
