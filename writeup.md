@@ -109,6 +109,8 @@ In case of these images it effictively meant to get rid of the differences of th
 Achieving equal variance is effectively accomplished by the adaptive histogram equalization. A good point to make here is that this worked a profoundly better than min-max scaling.
 So the normalization step is used here for achieving zero mean and changing the data type so that the gradients of all the images are comparable to each other. This step has also dramatically increased the learning speed.
 
+The labels are converted to one hot encoding so that they can be used by tensorflow's softmax_cross_entropy_with_logits to calculate the entrophy and ultimately the loss.
+
 ####2. Describe how, and identify where in your code, you set up training, validation and testing data. How much data was in each set? Explain what techniques were used to split the data into these sets. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, identify where in your code, and provide example images of the additional data)
 
 The dataset was already split into train, validation and test sets.
